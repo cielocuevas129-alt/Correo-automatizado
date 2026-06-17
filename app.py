@@ -1,62 +1,111 @@
-import streamlit as st
 import pandas as pd
-import os
+import smtplib
 
-st.set_page_config(
-    page_title="Automatización de Correos",
-    page_icon="📧"
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+from datetime import datetime
+
+# CONFIGURACIÓN
+
+correo_emisor = "[TU_CORREO@gmail.com](mailto:TU_CORREO@gmail.com)"
+password = "TU_CONTRASEÑA_DE_APLICACION"
+
+# LEER EXCEL
+
+df = pd.read_excel("clientes.xlsx")
+
+registro_envios = []
+
+# RECORRER CLIENTES
+
+for _, fila in df.iterrows():
+
+  correo_destino = fila["Correo"]
+
+  mensaje = MIMEMultipart()
+
+  mensaje["From"] = correo_emisor
+  mensaje["To"] = correo_destino
+  mensaje["Subject"] = "Información de Producto"
+
+cuerpo = f"""
+
+Hola {fila['Nombre']},
+
+Le informamos que su producto asignado es:
+
+{fila['Producto']}
+
+Gracias por su atención.
+
+Saludos cordiales.
+"""
+
+mensaje.attach(
+    MIMEText(cuerpo, "plain")
 )
 
-st.title("📧 Automatización de Correos")
+try:
 
-archivo = st.file_uploader(
-    "Selecciona el archivo Excel",
-    type=["xlsx"]
-)
-
-if archivo is not None:
-
-    df = pd.read_excel(archivo)
-
-    st.success("Archivo cargado correctamente")
-
-    st.subheader("Vista previa")
-
-    st.dataframe(df)
-
-    st.metric(
-        "Clientes cargados",
-        len(df)
+    servidor = smtplib.SMTP(
+        "smtp.gmail.com",
+        587
     )
 
-    if st.button("Enviar Correos"):
+    servidor.starttls()
 
-        # Aquí después conectaremos correo_automatico.py
+    servidor.login(
+        correo_emisor,
+        password
+    )
 
-        st.success("✅ Correos enviados correctamente")
+    servidor.send_message(
+        mensaje
+    )
 
-        if os.path.exists("reporte_envios.xlsx"):
+    servidor.quit()
 
-            reporte = pd.read_excel(
-                "reporte_envios.xlsx"
-            )
+    print(
+        f"Correo enviado a {correo_destino}"
+    )
 
-            st.subheader(
-                "Reporte de Envíos"
-            )
+    registro_envios.append([
+        fila["Nombre"],
+        correo_destino,
+        "Enviado",
+        datetime.now()
+    ])
 
-            st.dataframe(
-                reporte
-            )
+except Exception as e:
 
-            with open(
-                "reporte_envios.xlsx",
-                "rb"
-            ) as archivo_reporte:
+    print(
+        f"Error con {correo_destino}: {e}"
+    )
 
-                st.download_button(
-                    label="📥 Descargar Reporte",
-                    data=archivo_reporte,
-                    file_name="reporte_envios.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+    registro_envios.append([
+        fila["Nombre"],
+        correo_destino,
+        "Error",
+        datetime.now()
+    ])
+
+    #CREAR REPORTE FINAL
+
+reporte = pd.DataFrame(
+registro_envios,
+columns=[
+"Nombre",
+"Correo",
+"Estado",
+"Fecha"
+]
+)
+
+reporte.to_excel(
+"reporte_envios.xlsx",
+index=False
+)
+
+print("Proceso terminado")
+print("Reporte generado")
