@@ -3,7 +3,7 @@ import pandas as pd
 import os
 
 # ==========================
-# CONFIGURACIÓN DE LA PÁGINA
+# CONFIGURACIÓN
 # ==========================
 
 st.set_page_config(
@@ -14,7 +14,7 @@ st.set_page_config(
 st.title("📧 Automatización de Correos")
 
 # ==========================
-# CARGAR EXCEL
+# SUBIR ARCHIVO
 # ==========================
 
 archivo = st.file_uploader(
@@ -23,85 +23,59 @@ archivo = st.file_uploader(
 )
 
 # ==========================
-# MOSTRAR VISTA PREVIA
+# SI NO HAY ARCHIVO
+# ==========================
+
+if archivo is None:
+    st.info("📂 Carga un archivo Excel para comenzar")
+
+# ==========================
+# SI HAY ARCHIVO
 # ==========================
 
 if archivo is not None:
 
+    # Leer Excel
     df = pd.read_excel(archivo)
 
     st.success("✅ Archivo cargado correctamente")
 
+    # Vista previa
     st.subheader("📄 Vista previa")
 
     st.dataframe(df)
 
+    # Cantidad de clientes
     st.metric(
         "Clientes cargados",
         len(df)
     )
 
-# ==========================
-# REPORTE DE ENVÍOS
-# ==========================
+    # Mostrar reporte si existe
+    if os.path.exists("reporte_envios.xlsx"):
 
-if os.path.exists("reporte_envios.xlsx"):
-
-    st.subheader("📊 Reporte de Envíos")
-
-    reporte = pd.read_excel(
-        "reporte_envios.xlsx"
-    )
-
-    st.dataframe(reporte)
-
-    st.metric(
-        "Total registros",
-        len(reporte)
-    )
-
-    # Mostrar enviados y errores
-
-    if "Estado" in reporte.columns:
-
-        enviados = len(
-            reporte[
-                reporte["Estado"] == "Enviado"
-            ]
+        reporte = pd.read_excel(
+            "reporte_envios.xlsx"
         )
 
-        errores = len(
-            reporte[
-                reporte["Estado"] == "Error"
-            ]
-        )
+        st.subheader("📊 Reporte de Envíos")
+
+        st.dataframe(reporte)
 
         st.metric(
-            "Correos enviados",
-            enviados
+            "Total registros",
+            len(reporte)
         )
 
-        st.metric(
-            "Errores",
-            errores
-        )
+        # Descargar reporte
+        with open(
+            "reporte_envios.xlsx",
+            "rb"
+        ) as archivo_reporte:
 
-    # Descargar reporte
-
-    with open(
-        "reporte_envios.xlsx",
-        "rb"
-    ) as archivo_reporte:
-
-        st.download_button(
-            label="📥 Descargar Reporte",
-            data=archivo_reporte.read(),
-            file_name="reporte_envios.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-
-else:
-
-    st.info(
-        "Aún no existe un reporte generado."
-    )
+            st.download_button(
+                label="📥 Descargar Reporte",
+                data=archivo_reporte.read(),
+                file_name="reporte_envios.xlsx",
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            )
