@@ -2,85 +2,119 @@ import streamlit as st
 import pandas as pd
 import os
 
-# ==========================
-# CONFIGURACIÓN
-# ==========================
-
 st.set_page_config(
     page_title="Automatización de Correos",
-    page_icon="📧"
+    page_icon="📧",
+    layout="wide"
 )
 
-st.title("📧 Automatización de Correos")
+st.title("📧 Sistema de Automatización de Correos")
 
-# ==========================
-# SUBIR ARCHIVO
-# ==========================
+st.write(
+    "Cargue un archivo Excel para enviar correos y generar reportes."
+)
 
 archivo = st.file_uploader(
     "Selecciona el archivo Excel",
     type=["xlsx"]
 )
 
-# ==========================
-# SI NO HAY ARCHIVO
-# ==========================
-
-if archivo is None:
-    st.info("📂 Carga un archivo Excel para comenzar")
-
-# ==========================
-# SI HAY ARCHIVO
-# ==========================
-
 if archivo is not None:
 
-    # Leer Excel
     df = pd.read_excel(archivo)
 
     st.success("✅ Archivo cargado correctamente")
 
-    # Vista previa
-    st.subheader("📄 Vista previa")
+    st.subheader("📄 Vista previa de Clientes")
 
-    st.dataframe(df)
-
-    #BOTON
-    if st.button("Enviar correos"):
-        st.success("Correos enviados correctamente")
-
-
-    # Cantidad de clientes
-    st.metric(
-        "Clientes cargados",
-        len(df)
+    st.dataframe(
+        df,
+        use_container_width=True
     )
 
-    # Mostrar reporte si existe
-    if os.path.exists("reporte_envios.xlsx"):
+    col1, col2 = st.columns(2)
 
-        reporte = pd.read_excel(
-            "reporte_envios.xlsx"
-        )
-
-        st.subheader("📊 Reporte de Envíos")
-
-        st.dataframe(reporte)
-
+    with col1:
         st.metric(
-            "Total registros",
-            len(reporte)
+            "Clientes cargados",
+            len(df)
         )
 
-        # Descargar reporte
-        with open(
-            "reporte_envios.xlsx",
-            "rb"
-        ) as archivo_reporte:
+    with col2:
+        st.metric(
+            "Columnas",
+            len(df.columns)
+        )
 
-            st.download_button(
-                label="📥 Descargar Reporte",
-                data=archivo_reporte.read(),
-                file_name="reporte_envios.xlsx",
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    if st.button(
+        "📧 Enviar Correos",
+        use_container_width=True
+    ):
+
+        st.info(
+            "⏳ Procesando correos..."
+        )
+
+        # Aquí irá correo_automatico.py
+
+        st.success(
+            "✅ Proceso finalizado"
+        )
+
+        if os.path.exists(
+            "reporte_envios.xlsx"
+        ):
+
+            reporte = pd.read_excel(
+                "reporte_envios.xlsx"
             )
+
+            st.subheader(
+                "📊 Reporte de Envíos"
+            )
+
+            st.dataframe(
+                reporte,
+                use_container_width=True
+            )
+
+            if "Estado" in reporte.columns:
+
+                enviados = len(
+                    reporte[
+                        reporte["Estado"] == "Enviado"
+                    ]
+                )
+
+                errores = len(
+                    reporte[
+                        reporte["Estado"] == "Error"
+                    ]
+                )
+
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.metric(
+                        "Enviados",
+                        enviados
+                    )
+
+                with col2:
+                    st.metric(
+                        "Errores",
+                        errores
+                    )
+
+            with open(
+                "reporte_envios.xlsx",
+                "rb"
+            ) as archivo_reporte:
+
+                st.download_button(
+                    label="📥 Descargar Reporte",
+                    data=archivo_reporte.read(),
+                    file_name="reporte_envios.xlsx",
+                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    use_container_width=True
+                )
