@@ -45,6 +45,11 @@ if archivo is not None:
 
     st.dataframe(df)
 
+    #BOTON
+    if st.button("Enviar correos"):
+        st.success("Correos enviados correctamente")
+
+
     # Cantidad de clientes
     st.metric(
         "Clientes cargados",
