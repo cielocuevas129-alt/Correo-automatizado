@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import os
+import subprocess
+
 
 st.set_page_config(
     page_title="Automatización de Correos",
@@ -46,20 +48,11 @@ if archivo is not None:
             len(df.columns)
         )
 
-    if st.button(
-        "📧 Enviar Correos",
-        use_container_width=True
-    ):
-
-        st.info(
-            "⏳ Procesando correos..."
-        )
-
-        # Aquí irá correo_automatico.py
-
+    if st.button("📧 Enviar Correos"):
+        st.info("⏳ Procesando correos...")
+        subprocess.run(["python","correo_automatico.py"])
         st.success(
-            "✅ Proceso finalizado"
-        )
+            "✅ Proceso finalizado")
 
         if os.path.exists(
             "reporte_envios.xlsx"
