@@ -1,8 +1,8 @@
-%PDF-1.4
+%PDF-1.3
 %“Œ‹ž ReportLab Generated PDF document (opensource)
 1 0 obj
 <<
-/F1 2 0 R /F2 3 0 R
+/F1 2 0 R
 >>
 endobj
 2 0 obj
@@ -12,12 +12,7 @@ endobj
 endobj
 3 0 obj
 <<
-/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
->>
-endobj
-4 0 obj
-<<
-/Contents 8 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 7 0 R /Resources <<
+/Contents 7 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 6 0 R /Resources <<
 /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >> /Rotate 0 /Trans <<
 
@@ -25,50 +20,49 @@ endobj
   /Type /Page
 >>
 endobj
+4 0 obj
+<<
+/PageMode /UseNone /Pages 6 0 R /Type /Catalog
+>>
+endobj
 5 0 obj
 <<
-/PageMode /UseNone /Pages 7 0 R /Type /Catalog
+/Author (anonymous) /CreationDate (D:20260617174602-05'00') /Creator (anonymous) /Keywords () /ModDate (D:20260617174602-05'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (unspecified) /Title (Reporte Cliente) /Trapped /False
 >>
 endobj
 6 0 obj
 <<
-/Author (\(anonymous\)) /CreationDate (D:20260604180501-05'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20260604180501-05'00') /Producer (ReportLab PDF Library - \(opensource\)) 
-  /Subject (\(unspecified\)) /Title (\(anonymous\)) /Trapped /False
+/Count 1 /Kids [ 3 0 R ] /Type /Pages
 >>
 endobj
 7 0 obj
 <<
-/Count 1 /Kids [ 4 0 R ] /Type /Pages
->>
-endobj
-8 0 obj
-<<
-/Filter [ /ASCII85Decode /FlateDecode ] /Length 279
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 165
 >>
 stream
-Gat=cc#/,0&;BlQ.F-A1J2?4;>jg$0(6&]=jol%GrYQ4mq#1K!-7)BU\=(=[an`YZ&-tDDZ3F?e7F#:l^4U9=Tc:)`SBNk.80(UOZ#c=#=dtTmeqEJ/XRs,<Qkik8OUKeN<?adB0.BXAFWb@Ofir-ZXq.H4[Tuh&bJ&7Rm\+\i5GN!O40tDYaRX4'4n8Q(EYW+=NPCL*Z^8R23;12KoirJT1;D5#/:.qJHduV)[!gF&8TF!IPWY2&Knka8&LA#lYk.MRM.7aQ65(oo"lK`.?i~>endstream
+Garp"Ymu@>'Lq&PVt`c%YkL&`N?'`/(^>cm!_odo,*\JcrZpL]TZ`b;_]TNch)GCo5d_$OO;lj=%&Cd4W^]1._*i6hJdg9OT8tgpjDgd/=@7DUp(u=2^V',[N[9$o@4HR!J(VYbZmjja#<P@TC!md`]WkfgWWa+&/DC~>endstream
 endobj
 xref
-0 9
+0 8
 0000000000 65535 f 
 0000000061 00000 n 
-0000000102 00000 n 
-0000000209 00000 n 
-0000000321 00000 n 
-0000000524 00000 n 
-0000000592 00000 n 
-0000000872 00000 n 
-0000000931 00000 n 
+0000000092 00000 n 
+0000000199 00000 n 
+0000000402 00000 n 
+0000000470 00000 n 
+0000000738 00000 n 
+0000000797 00000 n 
 trailer
 <<
 /ID 
-[<135d1301ab4aff5c18ec0b4cb129f823><135d1301ab4aff5c18ec0b4cb129f823>]
+[<90c2a1f1791791ade8dbb76f2cae1e1e><90c2a1f1791791ade8dbb76f2cae1e1e>]
 % ReportLab generated PDF document -- digest (opensource)
 
-/Info 6 0 R
-/Root 5 0 R
-/Size 9
+/Info 5 0 R
+/Root 4 0 R
+/Size 8
 >>
 startxref
-1300
+1052
 %%EOF
