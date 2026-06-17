@@ -1,35 +1,27 @@
 import pandas as pd
 import smtplib
-
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
 from datetime import datetime
-
-# CONFIGURACIÓN
 
 correo_emisor = "[TU_CORREO@gmail.com](mailto:TU_CORREO@gmail.com)"
 password = "TU_CONTRASEÑA_DE_APLICACION"
-
-# LEER EXCEL
 
 df = pd.read_excel("clientes.xlsx")
 
 registro_envios = []
 
-# RECORRER CLIENTES
-
 for _, fila in df.iterrows():
-
   correo_destino = fila["Correo"]
 
-  mensaje = MIMEMultipart()
+mensaje = MIMEMultipart()
 
-  mensaje["From"] = correo_emisor
-  mensaje["To"] = correo_destino
-  mensaje["Subject"] = "Información de Producto"
+mensaje["From"] = correo_emisor
+mensaje["To"] = correo_destino
+mensaje["Subject"] = "Información de Producto"
 
 cuerpo = f"""
+```
 
 Hola {fila['Nombre']},
 
@@ -43,45 +35,36 @@ Saludos cordiales.
 """
 
 mensaje.attach(
-    MIMEText(cuerpo, "plain")
-)
+    MIMEText(cuerpo, "plain"))
 
 try:
 
     servidor = smtplib.SMTP(
         "smtp.gmail.com",
-        587
-    )
+        587)
 
     servidor.starttls()
 
     servidor.login(
         correo_emisor,
-        password
-    )
+        password)
 
     servidor.send_message(
-        mensaje
-    )
+        mensaje)
 
     servidor.quit()
 
-    print(
-        f"Correo enviado a {correo_destino}"
-    )
+    print(f"Correo enviado a {correo_destino}")
 
     registro_envios.append([
         fila["Nombre"],
         correo_destino,
         "Enviado",
-        datetime.now()
-    ])
+        datetime.now()])
 
 except Exception as e:
 
-    print(
-        f"Error con {correo_destino}: {e}"
-    )
+    print(f"Error con {correo_destino}: {e}")
 
     registro_envios.append([
         fila["Nombre"],
@@ -89,9 +72,6 @@ except Exception as e:
         "Error",
         datetime.now()
     ])
-
-    #CREAR REPORTE FINAL
-
 reporte = pd.DataFrame(
 registro_envios,
 columns=[
