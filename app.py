@@ -3,6 +3,9 @@ import pandas as pd
 import os
 import subprocess
 
+# ==========================
+# CONFIGURACIÓN
+# ==========================
 
 st.set_page_config(
     page_title="Automatización de Correos",
@@ -13,21 +16,39 @@ st.set_page_config(
 st.title("📧 Sistema de Automatización de Correos")
 
 st.write(
-    "Cargue un archivo Excel para enviar correos y generar reportes."
+    "Carga un archivo Excel para procesar correos y generar reportes."
 )
+
+# ==========================
+# CARGAR EXCEL
+# ==========================
 
 archivo = st.file_uploader(
     "Selecciona el archivo Excel",
     type=["xlsx"]
 )
 
-if archivo is not None:
+if archivo is None:
 
-    df = pd.read_excel(archivo)
+    st.info(
+        "📂 Carga un archivo Excel para comenzar."
+    )
 
-    st.success("✅ Archivo cargado correctamente")
+else:
 
-    st.subheader("📄 Vista previa de Clientes")
+    # Guardar Excel cargado
+    with open("clientes.xlsx", "wb") as f:
+        f.write(archivo.getbuffer())
+
+    df = pd.read_excel("clientes.xlsx")
+
+    st.success(
+        "✅ Archivo cargado correctamente"
+    )
+
+    st.subheader(
+        "📄 Vista previa"
+    )
 
     st.dataframe(
         df,
@@ -48,11 +69,31 @@ if archivo is not None:
             len(df.columns)
         )
 
-    if st.button("📧 Enviar Correos"):
-        st.info("⏳ Procesando correos...")
-        subprocess.run(["python","correo_automatico.py"])
+    # ==========================
+    # BOTÓN
+    # ==========================
+
+    if st.button(
+        "📧 Enviar Correos",
+        use_container_width=True
+    ):
+
+        st.info(
+            "⏳ Procesando correos..."
+        )
+
+        # Ejecutar script principal
+        subprocess.run(
+            ["python", "correo_automatico.py"]
+        )
+
         st.success(
-            "✅ Proceso finalizado")
+            "✅ Proceso finalizado"
+        )
+
+        # ==========================
+        # MOSTRAR REPORTE
+        # ==========================
 
         if os.path.exists(
             "reporte_envios.xlsx"
